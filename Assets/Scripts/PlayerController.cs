@@ -6,13 +6,13 @@ public class PlayerController : MonoBehaviour
 {
 
     //Declaring Constants
-    private string WALK = "Walk", RUN = "Run", JUMP = "Jump", CROUCH = "Crouch";
-    private bool isGrounded = true;
+    private string WALK = "Walk", RUN = "Run", CROUCH = "Crouch", GROUNDED = "grounded", JUMP = "jump";
+    private bool isGrounded;
     private string GROUND_TAG = "Ground";
 
     //Declaring Variables
     [SerializeField]
-    private float moveForce = 10f, jumpForce = 10f;
+    private float moveForce, jumpForce = 10f;
     private float horizontal, vertical;
 
     //Declaring components
@@ -33,21 +33,23 @@ public class PlayerController : MonoBehaviour
         //code
     }
 
-    private void FixedUpdate() {
-        //Code
-    }
-
-    // Update is called once per frame
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
         PlayerMovementKeyboard(horizontal);
-        PlayerWalk(horizontal);
-        PlayerRun(horizontal);
+        
+        if(Input.GetKey(KeyCode.LeftShift))
+            moveForce = 8f;
+        else
+            moveForce = 4f;
+
+        HorizontalMovement();
         PlayerJump();
-        PlayerJumpAnimation(vertical);
         PlayerCrouch();
+    }
+
+    private void LateUpdate() {
+        CheckWhereToFace();   
     }
 
     void PlayerMovementKeyboard(float horizontal)
@@ -55,67 +57,38 @@ public class PlayerController : MonoBehaviour
         transform.position += new Vector3(horizontal, 0f, 0f) * Time.deltaTime * moveForce;
     }
 
-    void PlayerWalk(float horizontal)
+    void HorizontalMovement()
     {
-        if(horizontal > 0)
-        {
-            anim.SetBool(WALK, true);
-            sr.flipX = false;
-        }
-        else if(horizontal < 0)
-        {
-            anim.SetBool(WALK, true);
-            sr.flipX = true;
-        }
-        else
-        {
-            anim.SetBool(WALK, false);
-            anim.SetBool("Run", false);
-        }
-        
-    }
-
-    void PlayerRun(float horizontal)
-    {   
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            if(horizontal > 0)
-        {
-            anim.SetBool(RUN, true);
-            sr.flipX = false;
-        }
-        else if(horizontal < 0)
-        {
-            anim.SetBool(RUN, true);
-            sr.flipX = true;
-        }
-        else
-        {
+        if(horizontal == 0) {
             anim.SetBool(WALK, false);
             anim.SetBool(RUN, false);
         }
-        }
+        if(horizontal != 0 && moveForce == 4f)
+            anim.SetBool(WALK, true);
+
+        if(horizontal != 0 && moveForce == 8f)
+            anim.SetBool(RUN, true);
+        else
+            anim.SetBool(RUN, false);   
     }
+
+    void CheckWhereToFace()
+	{
+		if (horizontal > 0)
+            sr.flipX = false;
+		else if (horizontal < 0)
+            sr.flipX = true;
+	}
 
     void PlayerJump()
     {
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        if(Input.GetKey(KeyCode.Space) && isGrounded)
         {
-            isGrounded = false;
             myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            anim.SetTrigger(JUMP);
+            isGrounded = false;
         }
-    }
-
-    void PlayerJumpAnimation(float vertical)
-    {
-        if(vertical > 0)
-        {
-            anim.SetBool(JUMP, true);
-        }
-        else
-        {
-            anim.SetBool(JUMP, false);
-        }
+        anim.SetBool(GROUNDED, isGrounded);
     }
 
     void PlayerCrouch()
@@ -129,7 +102,7 @@ public class PlayerController : MonoBehaviour
             anim.SetBool(CROUCH, false);
         }
     }
-
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.CompareTag(GROUND_TAG)) {
