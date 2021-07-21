@@ -6,12 +6,14 @@ public class PlayerController : MonoBehaviour
 {
 
     //Declaring Constants
-    private string WALK = "Walk";
+    private string WALK = "Walk", RUN = "Run", CROUCH = "Crouch", GROUNDED = "grounded", JUMP = "jump";
+    private bool isGrounded;
+    private string GROUND_TAG = "Ground";
 
     //Declaring Variables
     [SerializeField]
-    private float moveForce = 10f, jumpForce = 10f;
-    private float movementX;
+    private float moveForce, jumpForce = 10f;
+    private float horizontal, vertical;
 
     //Declaring components
     private Rigidbody2D myBody;
@@ -28,39 +30,83 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        
+        //code
     }
 
-    // Update is called once per frame
     void Update()
     {
-        PlayerMovementKeyboard();
-        AnimatePlayer();
+        horizontal = Input.GetAxisRaw("Horizontal");
+        PlayerMovementKeyboard(horizontal);
+        
+        if(Input.GetKey(KeyCode.LeftShift))
+            moveForce = 8f;
+        else
+            moveForce = 4f;
+
+        HorizontalMovement();
+        PlayerJump();
+        PlayerCrouch();
     }
 
-    void PlayerMovementKeyboard()
-    {
-        movementX = Input.GetAxisRaw("Horizontal");
-        transform.position += new Vector3(movementX, 0f, 0f) * Time.deltaTime * moveForce;
+    private void LateUpdate() {
+        CheckWhereToFace();   
     }
 
-    void AnimatePlayer()
+    void PlayerMovementKeyboard(float horizontal)
     {
-        if(movementX > 0)
-        {
-            anim.SetBool(WALK, true);
-            sr.flipX = false;
+        transform.position += new Vector3(horizontal, 0f, 0f) * Time.deltaTime * moveForce;
+    }
+
+    void HorizontalMovement()
+    {
+        if(horizontal == 0) {
+            anim.SetBool(WALK, false);
+            anim.SetBool(RUN, false);
         }
-        else if(movementX < 0)
-        {
+        if(horizontal != 0 && moveForce == 4f)
             anim.SetBool(WALK, true);
+
+        if(horizontal != 0 && moveForce == 8f)
+            anim.SetBool(RUN, true);
+        else
+            anim.SetBool(RUN, false);   
+    }
+
+    void CheckWhereToFace()
+	{
+		if (horizontal > 0)
+            sr.flipX = false;
+		else if (horizontal < 0)
             sr.flipX = true;
+	}
+
+    void PlayerJump()
+    {
+        if(Input.GetKey(KeyCode.Space) && isGrounded)
+        {
+            myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            anim.SetTrigger(JUMP);
+            isGrounded = false;
+        }
+        anim.SetBool(GROUNDED, isGrounded);
+    }
+
+    void PlayerCrouch()
+    {
+        if(Input.GetKey(KeyCode.C))
+        {
+            anim.SetBool(CROUCH, true);
         }
         else
         {
-            anim.SetBool(WALK, false);
-            anim.SetBool("Run", false);
+            anim.SetBool(CROUCH, false);
         }
-        
+    }
+    
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag(GROUND_TAG)) {
+            isGrounded = true;
+        }
     }
 }
