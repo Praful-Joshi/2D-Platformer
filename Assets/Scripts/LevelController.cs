@@ -2,10 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelFinish : MonoBehaviour
+public class LevelController : MonoBehaviour
 {
-    public static LevelFinish instance;
-
+    public static LevelController instance;
     public Transform RespawnPoint;
     public GameObject playerPrefab;
 
@@ -19,7 +18,14 @@ public class LevelFinish : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision) {
         if(collision.gameObject.GetComponent<PlayerController>() != null) {
-            Debug.Log("Level Completed");
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            if(playerController.hasKey == true) {
+                Debug.Log("Level 1 finished");
+            }
+            else {
+                Debug.Log("Find the key to move to the next level!");
+            }
+            
     }
     }
 }

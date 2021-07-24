@@ -8,7 +8,7 @@ public class PlayerDeath : MonoBehaviour
         if(transform.position.y <= -12f)
         {
             Destroy(gameObject);
-            LevelFinish.instance.Respawn();
+            LevelController.instance.Respawn();
         }
     }
 }

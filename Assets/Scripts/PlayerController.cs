@@ -13,18 +13,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float moveForce, jumpForce = 10f;
     private bool isGrounded;
+    internal bool hasKey = false;
     private float horizontal;
 
     //Declaring components
     private Rigidbody2D myBody;
     private SpriteRenderer sr;
     private Animator anim;
-
+    internal TMPController tMPController;
   
     private void Awake() {
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        tMPController = GetComponent<TMPController>();
+    }
+    
+    public void PickUpKey() {
+        hasKey = true;
+        Debug.Log("New key received");
+        //tMPController.KeyReceive();
     }
 
     void Start()
@@ -40,9 +48,9 @@ public class PlayerController : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         PlayerMovementKeyboard(horizontal);
-        
+
         if(Input.GetKey(KeyCode.LeftShift))
-            moveForce = 10f;
+            moveForce = 12f;
         else
             moveForce = 4f;
 
@@ -68,7 +76,7 @@ public class PlayerController : MonoBehaviour
         if(horizontal != 0 && moveForce == 4f)
             anim.SetBool(WALK, true);
 
-        if(horizontal != 0 && moveForce == 10f)
+        if(horizontal != 0 && moveForce == 12f)
             anim.SetBool(RUN, true);
         else
             anim.SetBool(RUN, false);   
