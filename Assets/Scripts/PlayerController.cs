@@ -20,19 +20,17 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D myBody;
     private SpriteRenderer sr;
     private Animator anim;
-    internal TMPController tMPController;
+    public TMPController tMPController;
   
     private void Awake() {
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-        tMPController = GetComponent<TMPController>();
     }
     
     public void PickUpKey() {
         hasKey = true;
-        Debug.Log("New key received");
-        //tMPController.KeyReceive();
+        StartCoroutine(tMPController.KeyReceive());
     }
 
     void Start()

@@ -5,18 +5,13 @@ using TMPro;
 
 public class TMPController : MonoBehaviour
 {
-    private TextMeshProUGUI KeyText;
+    // public TextMeshProUGUI KeyText;
+    public GameObject keyTMP;
 
-    private void Awake() {
-        KeyText = GetComponent<TextMeshProUGUI>();
-    }
-
-    private void Start() {
-        //code   
-    }
-
-    public void KeyReceive() {
-        Debug.Log("Key received UI");
+    public IEnumerator KeyReceive() {
+        keyTMP.SetActive(true);
+        yield return new WaitForSecondsRealtime(2);
+        keyTMP.SetActive(false);
     }
 
 
