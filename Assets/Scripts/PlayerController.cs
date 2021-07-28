@@ -22,10 +22,11 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer sr;
     private Animator anim;
     public TMPController tMPController;
-    
+
 
     // Start, Awake, Update etc.
-    private void Awake() {
+    private void Awake()
+    {
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -36,7 +37,8 @@ public class PlayerController : MonoBehaviour
         //code
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         PlayerJump();
     }
 
@@ -45,7 +47,7 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
         PlayerMovementKeyboard(horizontal);
 
-        if(Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
             moveForce = 9f;
         else
             moveForce = 3f;
@@ -54,8 +56,9 @@ public class PlayerController : MonoBehaviour
         PlayerCrouch();
     }
 
-    private void LateUpdate() {
-        CheckWhereToFace();   
+    private void LateUpdate()
+    {
+        CheckWhereToFace();
     }
 
 
@@ -67,32 +70,33 @@ public class PlayerController : MonoBehaviour
 
     void HorizontalMovement()
     {
-        if(horizontal == 0) {
+        if (horizontal == 0)
+        {
             anim.SetBool(WALK, false);
             anim.SetBool(RUN, false);
         }
-        if(horizontal != 0 && moveForce == 3f)
+        if (horizontal != 0 && moveForce == 3f)
             anim.SetBool(WALK, true);
 
-        if(horizontal != 0 && moveForce == 9f)
+        if (horizontal != 0 && moveForce == 9f)
             anim.SetBool(RUN, true);
         else
-            anim.SetBool(RUN, false);   
+            anim.SetBool(RUN, false);
     }
 
     void CheckWhereToFace()
-	{
-		if (horizontal > 0)
+    {
+        if (horizontal > 0)
             sr.flipX = false;
-		else if (horizontal < 0)
+        else if (horizontal < 0)
             sr.flipX = true;
-	}
+    }
 
     void PlayerJump()
     {
-        if(Input.GetKey(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
-            myBody.velocity = new Vector2(myBody.velocity.x, jumpForce); 
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpForce);
             anim.SetTrigger(JUMP);
             isGrounded = false;
         }
@@ -101,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     void PlayerCrouch()
     {
-        if(Input.GetKey(KeyCode.C))
+        if (Input.GetKey(KeyCode.C))
         {
             anim.SetBool(CROUCH, true);
         }
@@ -110,30 +114,32 @@ public class PlayerController : MonoBehaviour
             anim.SetBool(CROUCH, false);
         }
     }
-    
+
     // Interactable functions
-    public void PickUpKey() {
+    public void PickUpKey()
+    {
         hasKey = true;
         StartCoroutine(tMPController.KeyReceive());
     }
 
-    public IEnumerator KillPlayer() {
+    public IEnumerator KillPlayer()
+    {
         Debug.Log("Player killed by enemy");
-        
-        anim.SetTrigger(DEAD);
-        yield return new WaitForSecondsRealtime(5);
+        yield return new WaitForSecondsRealtime(0);
         Destroy(gameObject);
         ReloadScene();
     }
 
-    public void ReloadScene() {
+    public void ReloadScene()
+    {
         SceneManager.LoadScene(0);
     }
 
     // Collision check
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag(GROUND_TAG)) {
+        if (collision.gameObject.CompareTag(GROUND_TAG))
+        {
             isGrounded = true;
         }
     }

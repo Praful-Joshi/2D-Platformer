@@ -495,10 +495,10 @@ Transform:
   m_Children:
   - {fileID: 1724600848}
   - {fileID: 196760506}
-  - {fileID: 828910400}
-  - {fileID: 1816123789}
   - {fileID: 1974627578}
   - {fileID: 1205204377}
+  - {fileID: 828910402}
+  - {fileID: 1816123789}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -620,30 +620,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &828910399 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7785084603105236385, guid: 39e622835aa5b194e9ecdea80370a52c,
-    type: 3}
-  m_PrefabInstance: {fileID: 7785084603921563294}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &828910400 stripped
+--- !u!4 &828910402 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7785084603105236446, guid: 39e622835aa5b194e9ecdea80370a52c,
     type: 3}
   m_PrefabInstance: {fileID: 7785084603921563294}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &828910401
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 828910399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1e32deb9c06f74eb5f99f4db68a40e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1193043886
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,7 +720,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 472530166}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1529817779 stripped
 Transform:
@@ -3651,7 +3633,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 472530166}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1974627579
 BoxCollider2D:
@@ -3708,7 +3690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9806644169744053, guid: d737fb5fb813c314a957723ed7f1cefc, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9806644169744053, guid: d737fb5fb813c314a957723ed7f1cefc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3767,12 +3749,12 @@ PrefabInstance:
     - target: {fileID: 7785084603105236446, guid: 39e622835aa5b194e9ecdea80370a52c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7785084603105236446, guid: 39e622835aa5b194e9ecdea80370a52c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 28.67
+      value: 23.63
       objectReference: {fileID: 0}
     - target: {fileID: 7785084603105236446, guid: 39e622835aa5b194e9ecdea80370a52c,
         type: 3}
@@ -3792,17 +3774,17 @@ PrefabInstance:
     - target: {fileID: 7785084603105236446, guid: 39e622835aa5b194e9ecdea80370a52c,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7785084603105236446, guid: 39e622835aa5b194e9ecdea80370a52c,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7785084603105236446, guid: 39e622835aa5b194e9ecdea80370a52c,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7785084603105236446, guid: 39e622835aa5b194e9ecdea80370a52c,
         type: 3}
@@ -3828,14 +3810,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1614390528, guid: db75447cac1a6bd4b910c954d1822784, type: 3}
-      propertyPath: m_SpriteTilingProperty.pivot.x
-      value: 0.40749937
-      objectReference: {fileID: 0}
-    - target: {fileID: 1614390528, guid: db75447cac1a6bd4b910c954d1822784, type: 3}
-      propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0.32844368
-      objectReference: {fileID: 0}
     - target: {fileID: 2771688397941815901, guid: db75447cac1a6bd4b910c954d1822784,
         type: 3}
       propertyPath: tMPController

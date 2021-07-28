@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PlayerDeath : MonoBehaviour
         if(transform.position.y <= -12f)
         {
             Destroy(gameObject);
-            LevelController.instance.Respawn();
+            SceneManager.LoadScene(0);
         }
     }
 }
