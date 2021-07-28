@@ -1,19 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class LevelController : MonoBehaviour
 {
     public static LevelController instance;
     public Transform RespawnPoint;
     public GameObject playerPrefab;
+    public CinemachineVirtualCamera myCinemachine;
 
     private void Awake() {
         instance = this;
     }
 
     public void Respawn() {
-        Instantiate(playerPrefab, RespawnPoint.position, Quaternion.identity);
+        var newPlayer = Instantiate(playerPrefab, RespawnPoint.position, Quaternion.identity);
+        myCinemachine.m_Follow = newPlayer.transform;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
