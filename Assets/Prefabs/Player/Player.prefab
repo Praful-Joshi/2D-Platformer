@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 1614390527}
   - component: {fileID: 1614390528}
   - component: {fileID: 2771688397941815901}
-  - component: {fileID: 566684034}
+  - component: {fileID: 3058306}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,9 +166,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveForce: 4
-  jumpForce: 9
+  jumpForce: 8
+  health: 100
+  lives: 3
   tMPController: {fileID: 0}
---- !u!114 &566684034
+  levelController: {fileID: 0}
+--- !u!114 &3058306
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

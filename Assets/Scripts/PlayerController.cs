@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,12 +17,15 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     internal bool hasKey = false;
     private float horizontal;
+    public int health = 100, lives = 2;
 
     //Declaring components
     private Rigidbody2D myBody;
+    private Transform myTransform;
     private SpriteRenderer sr;
     private Animator anim;
     public TMPController tMPController;
+    public LevelController levelController;
 
 
     // Start, Awake, Update etc.
@@ -30,6 +34,7 @@ public class PlayerController : MonoBehaviour
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        myTransform = GetComponent<Transform>();
     }
 
     void Start()
@@ -54,6 +59,7 @@ public class PlayerController : MonoBehaviour
 
         HorizontalMovement();
         PlayerCrouch();
+        DeathByFalling();
     }
 
     private void LateUpdate()
@@ -115,6 +121,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
     // Interactable functions
     public void PickUpKey()
     {
@@ -122,18 +129,15 @@ public class PlayerController : MonoBehaviour
         StartCoroutine(tMPController.KeyReceive());
     }
 
-    public IEnumerator KillPlayer()
+    public void DeathByFalling()
     {
-        Debug.Log("Player killed by enemy");
-        yield return new WaitForSecondsRealtime(0);
-        Destroy(gameObject);
-        ReloadScene();
+        if (transform.position.y <= -12f)
+        {
+            Destroy(gameObject);
+            SceneManager.LoadScene(0);
+        }
     }
 
-    public void ReloadScene()
-    {
-        SceneManager.LoadScene(0);
-    }
 
     // Collision check
     private void OnCollisionEnter2D(Collision2D collision)
