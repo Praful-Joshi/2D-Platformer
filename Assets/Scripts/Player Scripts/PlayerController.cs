@@ -8,16 +8,18 @@ public class PlayerController : MonoBehaviour
 {
 
     //Declaring Constants
-    private string WALK = "Walk", RUN = "Run", CROUCH = "Crouch", GROUNDED = "Grounded", JUMP = "Jump";
+    private string WALK = "Player_Walk", RUN = "Player_Run", CROUCH = "Player_Crouch", JUMP = "Player_Jump", IDLE = "Player_Idle";
     private string GROUND_TAG = "Ground";
 
     //Declaring Variables
     [SerializeField]
     private float moveForce, jumpForce = 10f;
-    private bool isGrounded;
+    private bool isGrounded, isJumpPressed, isRunning, isCrouch;
     internal bool hasKey = false;
     private float horizontal;
     public int health = 100, lives = 2;
+    private string currentState;
+
 
     //Declaring components
     private Rigidbody2D myBody;
@@ -42,22 +44,43 @@ public class PlayerController : MonoBehaviour
         //code
     }
 
-    private void FixedUpdate()
-    {
-        PlayerJump();
-    }
-
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
-        PlayerMovementKeyboard(horizontal);
 
         if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isRunning = true;
             moveForce = 9f;
+        }
         else
-            moveForce = 3f;
+        {
+            isRunning = false;
+            moveForce = 4f;
+        }
 
-        HorizontalMovement();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isJumpPressed = true;
+        }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            isCrouch = true;
+        }
+        else
+        {
+            isCrouch = false;
+        }
+
+        PlayerMovementKeyboard(horizontal);
+    }
+
+    private void FixedUpdate()
+    {
+        PlayerWalk();
+        PlayerRun();
+        PlayerJump();
         PlayerCrouch();
     }
 
@@ -66,6 +89,14 @@ public class PlayerController : MonoBehaviour
         CheckWhereToFace();
     }
 
+    // Collision check
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(GROUND_TAG))
+        {
+            isGrounded = true;
+        }
+    }
 
     // Player Movement & Animations
     void PlayerMovementKeyboard(float horizontal)
@@ -73,20 +104,60 @@ public class PlayerController : MonoBehaviour
         transform.position += new Vector3(horizontal, 0f, 0f) * Time.deltaTime * moveForce;
     }
 
-    void HorizontalMovement()
+    void PlayerWalk()
     {
-        if (horizontal == 0)
+        if (isGrounded && !isCrouch)
         {
-            anim.SetBool(WALK, false);
-            anim.SetBool(RUN, false);
+            if (horizontal == 0)
+            {
+                ChangeAnimationState(IDLE);
+            }
+            else if(moveForce == 4f)
+            {
+                ChangeAnimationState(WALK);
+            }
         }
-        if (horizontal != 0 && moveForce == 3f)
-            anim.SetBool(WALK, true);
+    }
 
-        if (horizontal != 0 && moveForce == 9f)
-            anim.SetBool(RUN, true);
-        else
-            anim.SetBool(RUN, false);
+    void PlayerRun()
+    {
+        if (isGrounded && !isCrouch)
+        {
+            if (horizontal == 0)
+            {
+                ChangeAnimationState(IDLE);
+            }
+            else if (horizontal != 0 && isRunning && moveForce == 9f)
+            {
+                ChangeAnimationState(RUN);
+            }
+        }
+    }
+
+    void PlayerJump()
+    {
+        if (isJumpPressed && isGrounded)
+        {
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpForce);
+            isJumpPressed = false;
+            isGrounded = false;
+            ChangeAnimationState(JUMP);
+        }
+    }
+
+    void PlayerCrouch()
+    {
+        if(isCrouch && isGrounded)
+        {
+            ChangeAnimationState(CROUCH);
+        }
+    }
+
+    internal void ChangeAnimationState(string newState)
+    {
+        if (currentState == newState) return;
+        anim.Play(newState);
+        currentState = newState;
     }
 
     void CheckWhereToFace()
@@ -97,43 +168,10 @@ public class PlayerController : MonoBehaviour
             sr.flipX = true;
     }
 
-    void PlayerJump()
-    {
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
-        {
-            myBody.velocity = new Vector2(myBody.velocity.x, jumpForce);
-            anim.SetTrigger(JUMP);
-            isGrounded = false;
-        }
-        anim.SetBool(GROUNDED, isGrounded);
-    }
-
-    void PlayerCrouch()
-    {
-        if (Input.GetKey(KeyCode.C))
-        {
-            anim.SetBool(CROUCH, true);
-        }
-        else
-        {
-            anim.SetBool(CROUCH, false);
-        }
-    }
-
-
     // Interactable functions
     public void PickUpKey()
     {
         hasKey = true;
         StartCoroutine(tMPController.KeyReceive());
-    }
-
-    // Collision check
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag(GROUND_TAG))
-        {
-            isGrounded = true;
-        }
     }
 }

@@ -35,8 +35,7 @@ AnimatorState:
   m_Name: Player_Crouch
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: 5785214327865795163}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -137,10 +136,7 @@ AnimatorState:
   m_Name: Player_Walk
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: -2341301007341500035}
-  - {fileID: -4441252009926369049}
-  - {fileID: 8409277206601958421}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -339,8 +335,7 @@ AnimatorState:
   m_Name: Player_Jump
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: 961102335839648389}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -464,55 +459,7 @@ AnimatorController:
   m_PrefabAsset: {fileID: 0}
   m_Name: Player
   serializedVersion: 5
-  m_AnimatorParameters:
-  - m_Name: Idle
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Walk
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Run
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Crouch
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Jump
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Grounded
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Hurt
-    m_Type: 9
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
-  - m_Name: Dead
-    m_Type: 4
-    m_DefaultFloat: 0
-    m_DefaultInt: 0
-    m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+  m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -537,36 +484,33 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 5467025627877920449}
-    m_Position: {x: 240, y: -80, z: 0}
+    m_Position: {x: -150, y: -220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5907318252674240193}
-    m_Position: {x: 570, y: -190, z: 0}
+    m_Position: {x: -150, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2861410384542415121}
-    m_Position: {x: 250, y: -240, z: 0}
+    m_Position: {x: -150, y: -40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8571160220832563385}
-    m_Position: {x: 360, y: 30, z: 0}
+    m_Position: {x: -150, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5992742812869687243}
-    m_Position: {x: 570, y: -80, z: 0}
+    m_Position: {x: -150, y: -160, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5270991986763022622}
-    m_Position: {x: 90, y: -340, z: 0}
+    m_Position: {x: -150, y: 80, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4254189462057332365}
-    m_Position: {x: -200, y: -340, z: 0}
+    m_Position: {x: -150, y: 140, z: 0}
   m_ChildStateMachines: []
-  m_AnyStateTransitions:
-  - {fileID: 1400748328653608927}
-  - {fileID: 882805432367943884}
-  - {fileID: -8275429534813352619}
+  m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: -20, y: -230, z: 0}
-  m_EntryPosition: {x: -60, y: -80, z: 0}
-  m_ExitPosition: {x: -390, y: -200, z: 0}
+  m_AnyStatePosition: {x: -390, y: -310, z: 0}
+  m_EntryPosition: {x: -390, y: -210, z: 0}
+  m_ExitPosition: {x: -390, y: -260, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 5467025627877920449}
 --- !u!1101 &882805432367943884
@@ -858,8 +802,7 @@ AnimatorState:
   m_Name: Player_Hurt
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: -1702613918846707967}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -885,10 +828,7 @@ AnimatorState:
   m_Name: Player_Idle
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: -8193339773526832862}
-  - {fileID: 1811122520210671396}
-  - {fileID: -5012687561406809691}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
@@ -939,10 +879,7 @@ AnimatorState:
   m_Name: Player_Run
   m_Speed: 1
   m_CycleOffset: 0
-  m_Transitions:
-  - {fileID: 1276930544800169681}
-  - {fileID: -8914064653590403168}
-  - {fileID: -1071315663138373382}
+  m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
