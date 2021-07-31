@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
+    // private string HURT = "Hurt", DEAD = "Dead";
     private PlayerController playerController;
     private Transform myTransform;
     public GameObject respawnPosition;
+    public UIController uIController;
+
+    private void Update() {
+        DeathByFalling();
+    }
 
     private void Awake()
     {
@@ -19,19 +25,37 @@ public class PlayerDeath : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            playerController.health -= 50; 
+            playerController.health -= 25;
+
             // Debug.Log("Health = " + playerController.health);
             if (playerController.health == 0)
             {
                 playerController.lives -= 1;
                 Respawn();
-                // Debug.Log("Lives remaining = " + playerController.lives);
                 playerController.health = 100;
             }
             if(playerController.lives == 0)
             {
                 Destroy(gameObject);
-                SceneManager.LoadScene(0);
+                uIController.GameOverPanel();
+            }
+        }
+    }
+
+    public void DeathByFalling()
+    {
+        if (transform.position.y <= -12f)
+        {   
+            if(playerController.lives != 0)
+            {
+                playerController.lives -= 1;
+                Respawn();
+                playerController.health = 100;
+            }
+            if(playerController.lives == 0)
+            {
+                Destroy(gameObject);
+                SceneManager.LoadScene(1);
             }
         }
     }

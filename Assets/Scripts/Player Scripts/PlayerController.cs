@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
 
     //Declaring Constants
-    private string WALK = "Walk", RUN = "Run", CROUCH = "Crouch", GROUNDED = "Grounded", JUMP = "Jump", HURT = "Hurt", DEAD = "Dead";
+    private string WALK = "Walk", RUN = "Run", CROUCH = "Crouch", GROUNDED = "Grounded", JUMP = "Jump";
     private string GROUND_TAG = "Ground";
 
     //Declaring Variables
@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D myBody;
     private Transform myTransform;
     private SpriteRenderer sr;
-    private Animator anim;
+    internal Animator anim;
     public TMPController tMPController;
     public LevelController levelController;
 
@@ -59,7 +59,6 @@ public class PlayerController : MonoBehaviour
 
         HorizontalMovement();
         PlayerCrouch();
-        DeathByFalling();
     }
 
     private void LateUpdate()
@@ -128,16 +127,6 @@ public class PlayerController : MonoBehaviour
         hasKey = true;
         StartCoroutine(tMPController.KeyReceive());
     }
-
-    public void DeathByFalling()
-    {
-        if (transform.position.y <= -12f)
-        {
-            Destroy(gameObject);
-            SceneManager.LoadScene(0);
-        }
-    }
-
 
     // Collision check
     private void OnCollisionEnter2D(Collision2D collision)
