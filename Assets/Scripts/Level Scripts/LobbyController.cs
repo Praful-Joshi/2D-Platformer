@@ -1,18 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject levelSelection, backButton;
+    private bool hasQuit;
+
+    private void Update() {
+        if(hasQuit)
+        {
+            Application.Quit();
+        }
+    }
+    
+    public void PlayButton()
     {
-        
+        levelSelection.SetActive(true);
+        backButton.SetActive(true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void QuitButton()
     {
-        
+        hasQuit = true;
+    }
+
+    public void BackButton()
+    {
+        levelSelection.SetActive(false);
+        backButton.SetActive(false);
+    }
+
+    public void Level1Button()
+    {
+        SceneManager.LoadScene(1);
+    }
+
+    public void Level2Button()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void Level3Button()
+    {
+        SceneManager.LoadScene(3);
+    }
+
+    public void Level4Button()
+    {
+        SceneManager.LoadScene(4);
     }
 }
