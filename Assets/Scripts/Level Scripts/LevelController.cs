@@ -5,8 +5,8 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
     public PlayerController playerController;
-    [HideInInspector]
-    public bool hasWon = false;
+    public GameObject gameWonPanel;
+    public UIController uIController;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -14,14 +14,13 @@ public class LevelController : MonoBehaviour
         {
             if (playerController.hasKey == true)
             {
-                hasWon = true;
+                PlayerPrefs.SetInt("levelReach", uIController.nextScene);
                 Debug.Log("Level finished");
-                Debug.Log("Reched has won");
+                gameWonPanel.SetActive(true);
             }
             else
             {
                 Debug.Log("Find the key to move to the next level!");
-                hasWon = false;
             }
         }
     }

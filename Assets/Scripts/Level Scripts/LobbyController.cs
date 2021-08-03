@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LobbyController : MonoBehaviour
 {
-    public GameObject levelSelection, backButton;
+    public GameObject levelSelection, backButton, resetButton;
     private bool hasQuit;
 
     private void Update() {
@@ -19,6 +19,7 @@ public class LobbyController : MonoBehaviour
     {
         levelSelection.SetActive(true);
         backButton.SetActive(true);
+        resetButton.SetActive(true);
     }
 
     public void QuitButton()
@@ -30,6 +31,12 @@ public class LobbyController : MonoBehaviour
     {
         levelSelection.SetActive(false);
         backButton.SetActive(false);
+        resetButton.SetActive(false);
+    }
+    
+    public void ResetLevels()
+    {
+        PlayerPrefs.SetInt("levelReach", 1);
     }
 
     public void Level1Button()
