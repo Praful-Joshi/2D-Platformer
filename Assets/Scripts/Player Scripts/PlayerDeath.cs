@@ -30,7 +30,7 @@ public class PlayerDeath : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            playerController.health -= 20;
+            playerController.health -= 50;
 
             isHurt = true;
             PlayerHurt();
@@ -64,7 +64,7 @@ public class PlayerDeath : MonoBehaviour
 
     public void DeathByFalling()
     {
-        if (transform.position.y <= -12f)
+        if (transform.position.y <= -17.5f)
         {
             isDead = true;
             PlayerDead();

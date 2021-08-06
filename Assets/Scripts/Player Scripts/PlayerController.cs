@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             isRunning = true;
-            moveForce = 9f;
+            moveForce = 8f;
         }
         else
         {
@@ -73,7 +73,11 @@ public class PlayerController : MonoBehaviour
             isCrouch = false;
         }
 
-        PlayerMovementKeyboard(horizontal);
+        if(!isCrouch)
+        {
+            PlayerMovementKeyboard(horizontal);
+        }
+        
     }
 
     private void FixedUpdate()
@@ -127,7 +131,7 @@ public class PlayerController : MonoBehaviour
             {
                 ChangeAnimationState(IDLE);
             }
-            else if (horizontal != 0 && isRunning && moveForce == 9f)
+            else if (horizontal != 0 && isRunning && moveForce == 8f)
             {
                 ChangeAnimationState(RUN);
             }
