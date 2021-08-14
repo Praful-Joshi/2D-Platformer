@@ -17,6 +17,7 @@ public class LevelController : MonoBehaviour
                 PlayerPrefs.SetInt("levelReach", uIController.nextScene);
                 Debug.Log("Level finished");
                 gameWonPanel.SetActive(true);
+                Time.timeScale = 0f;
             }
             else
             {

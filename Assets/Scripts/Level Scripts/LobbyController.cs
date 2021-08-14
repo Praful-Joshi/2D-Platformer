@@ -9,13 +9,14 @@ public class LobbyController : MonoBehaviour
     public GameObject levelSelection, backButton, resetButton;
     private bool hasQuit;
 
-    private void Update() {
-        if(hasQuit)
+    private void Update()
+    {
+        if (hasQuit)
         {
             Application.Quit();
         }
     }
-    
+
     public void PlayButton()
     {
         levelSelection.SetActive(true);
@@ -34,7 +35,7 @@ public class LobbyController : MonoBehaviour
         backButton.SetActive(false);
         resetButton.SetActive(false);
     }
-    
+
     public void ResetLevels()
     {
         PlayerPrefs.SetInt("levelReach", 1);

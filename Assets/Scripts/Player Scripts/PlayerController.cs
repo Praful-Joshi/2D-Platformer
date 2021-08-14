@@ -8,17 +8,19 @@ public class PlayerController : MonoBehaviour
 {
 
     //Declaring Constants
-    private string WALK = "Player_Walk", RUN = "Player_Run", CROUCH = "Player_Crouch", JUMP = "Player_Jump", IDLE = "Player_Idle";
+    private string WALK = "Player_Walk", RUN = "Player_Run", CROUCH = "Player_Crouch", JUMP = "Player_Jump", IDLE = "Player_Idle", MELEE = "Player_Melee_Attack";
     private string GROUND_TAG = "Ground";
 
     //Declaring Variables
     [SerializeField]
     private float moveForce, jumpForce = 10f;
-    private bool isGrounded, isJumpPressed, isRunning, isCrouch;
+    private bool isGrounded, isJumpPressed, isRunning, isCrouch, isAttackPressed;
+    internal bool isAttacking = false;
     internal bool hasKey = false;
     private float horizontal;
     public int health = 100, lives = 2;
     private string currentState;
+    private float attackDelay;
 
 
     //Declaring components
@@ -52,16 +54,23 @@ public class PlayerController : MonoBehaviour
         {
             isRunning = true;
             moveForce = 8f;
+            jumpForce = 10f;
         }
         else
         {
             isRunning = false;
             moveForce = 4f;
+            jumpForce = 8f;
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             isJumpPressed = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !UIController.isGamePaused)
+        {
+            isAttackPressed = true;
         }
 
         if (Input.GetKey(KeyCode.C))
@@ -73,11 +82,11 @@ public class PlayerController : MonoBehaviour
             isCrouch = false;
         }
 
-        if(!isCrouch)
+        if (!isCrouch && !isAttacking)
         {
             PlayerMovementKeyboard(horizontal);
         }
-        
+
     }
 
     private void FixedUpdate()
@@ -86,6 +95,7 @@ public class PlayerController : MonoBehaviour
         PlayerRun();
         PlayerJump();
         PlayerCrouch();
+        PlayerMeleeAttack();
     }
 
     private void LateUpdate()
@@ -110,13 +120,13 @@ public class PlayerController : MonoBehaviour
 
     void PlayerWalk()
     {
-        if (isGrounded && !isCrouch)
+        if (isGrounded && !isCrouch && !isAttacking)
         {
             if (horizontal == 0)
             {
                 ChangeAnimationState(IDLE);
             }
-            else if(moveForce == 4f)
+            else if (moveForce == 4f)
             {
                 ChangeAnimationState(WALK);
             }
@@ -125,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
     void PlayerRun()
     {
-        if (isGrounded && !isCrouch)
+        if (isGrounded && !isCrouch && !isAttacking)
         {
             if (horizontal == 0)
             {
@@ -151,10 +161,31 @@ public class PlayerController : MonoBehaviour
 
     void PlayerCrouch()
     {
-        if(isCrouch && isGrounded)
+        if (isCrouch && isGrounded)
         {
             ChangeAnimationState(CROUCH);
         }
+    }
+
+    void PlayerMeleeAttack()
+    {
+        if (isAttackPressed)
+        {
+            isAttackPressed = false;
+            if (!isAttacking)
+            {
+                isAttacking = true;
+                //attack code
+                ChangeAnimationState(MELEE);
+                attackDelay = anim.GetCurrentAnimatorStateInfo(0).length;
+                Invoke("AttackComplete", attackDelay);
+            }
+        }
+    }
+
+    void AttackComplete()
+    {
+        isAttacking = false;
     }
 
     internal void ChangeAnimationState(string newState)
