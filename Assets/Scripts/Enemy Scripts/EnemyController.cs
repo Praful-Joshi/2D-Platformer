@@ -11,12 +11,14 @@ public class EnemyController : MonoBehaviour
     internal string currentState;
 
     internal Animator anim;
+    private BoxCollider2D boxCollider;
 
     public PlayerController playerController;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -42,5 +44,10 @@ public class EnemyController : MonoBehaviour
         if (currentState == newState) return;
         anim.Play(newState);
         currentState = newState;
+    }
+
+    void ColliderDisable()
+    {
+        boxCollider.enabled = false;
     }
 }

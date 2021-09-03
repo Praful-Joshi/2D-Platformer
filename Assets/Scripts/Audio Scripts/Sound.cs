@@ -6,7 +6,8 @@ public class Sound
 {
     public string name;
     public AudioClip clip;
-    public bool playOnAwake;
+    public bool loop;
+    public bool PlayOnAwake;
 
     [HideInInspector]
     public AudioSource source;

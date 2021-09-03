@@ -7,18 +7,10 @@ using UnityEngine.Audio;
 public class LobbyController : MonoBehaviour
 {
     public GameObject levelSelection, backButton, resetButton;
-    private bool hasQuit;
-
-    private void Update()
-    {
-        if (hasQuit)
-        {
-            Application.Quit();
-        }
-    }
 
     public void PlayButton()
     {
+        SFXManager.sfxInstance.Play("ButtonClick");
         levelSelection.SetActive(true);
         backButton.SetActive(true);
         resetButton.SetActive(true);
@@ -26,11 +18,13 @@ public class LobbyController : MonoBehaviour
 
     public void QuitButton()
     {
-        hasQuit = true;
+        SFXManager.sfxInstance.Play("QuitButtonClick");
+        Application.Quit();
     }
 
     public void BackButton()
     {
+        SFXManager.sfxInstance.Play("BackButtonClick");
         levelSelection.SetActive(false);
         backButton.SetActive(false);
         resetButton.SetActive(false);
@@ -38,26 +32,31 @@ public class LobbyController : MonoBehaviour
 
     public void ResetLevels()
     {
+        SFXManager.sfxInstance.Play("BackButtonClick");
         PlayerPrefs.SetInt("levelReach", 1);
     }
 
     public void Level1Button()
     {
+        SFXManager.sfxInstance.Play("StartButtonClick");
         SceneManager.LoadScene(1);
     }
 
     public void Level2Button()
     {
+        SFXManager.sfxInstance.Play("StartButtonClick");
         SceneManager.LoadScene(2);
     }
 
     public void Level3Button()
     {
+        SFXManager.sfxInstance.Play("StartButtonClick");
         SceneManager.LoadScene(3);
     }
 
     public void Level4Button()
     {
+        SFXManager.sfxInstance.Play("StartButtonClick");
         SceneManager.LoadScene(4);
     }
 }

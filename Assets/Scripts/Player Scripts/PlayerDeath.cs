@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
-    private string HURT = "Player_Hurt", DEAD = "Player_Dead";
+    private string HURT = "Player_Hurt";
     internal bool isHurt, isDead, isHurting = false, isDying = false;
     private PlayerController playerController;
     private Transform myTransform;
@@ -13,6 +13,8 @@ public class PlayerDeath : MonoBehaviour
     public UIController uIController;
     private Animator anim;
     private float hurtDelay, deathDelay;
+
+    private PlayerAnimations playerAnimations;
 
     private void Update()
     {
@@ -24,6 +26,7 @@ public class PlayerDeath : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         myTransform = GetComponent<Transform>();
         anim = GetComponent<Animator>();
+        playerAnimations = GetComponent<PlayerAnimations>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -82,7 +85,7 @@ public class PlayerDeath : MonoBehaviour
             if (!isHurting)
             {
                 isHurting = true;
-                playerController.ChangeAnimationState(HURT);
+                playerAnimations.ChangeAnimationState(HURT);
                 hurtDelay = anim.GetCurrentAnimatorStateInfo(0).length;
                 Invoke("HurtComplete", hurtDelay);
             }
