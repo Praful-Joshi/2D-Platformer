@@ -5,6 +5,8 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
     public PlayerController playerController;
+    public GameObject gameWonPanel;
+    public UIController uIController;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,7 +14,10 @@ public class LevelController : MonoBehaviour
         {
             if (playerController.hasKey == true)
             {
-                Debug.Log("Level 1 finished");
+                PlayerPrefs.SetInt("levelReach", uIController.nextScene);
+                Debug.Log("Level finished");
+                gameWonPanel.SetActive(true);
+                Time.timeScale = 0f;
             }
             else
             {

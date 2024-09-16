@@ -5,14 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class PlayerDeath : MonoBehaviour
 {
-    private string HURT = "Player_Hurt", DEAD = "Player_Dead";
-    internal bool isHurt, isDead;
+    private string HURT = "Player_Hurt";
+    internal bool isHurt, isDead, isHurting = false, isDying = false;
     private PlayerController playerController;
     private Transform myTransform;
     public GameObject respawnPosition;
     public UIController uIController;
     private Animator anim;
     private float hurtDelay, deathDelay;
+
+    private PlayerAnimations playerAnimations;
 
     private void Update()
     {
@@ -24,53 +26,38 @@ public class PlayerDeath : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         myTransform = GetComponent<Transform>();
         anim = GetComponent<Animator>();
+        playerAnimations = GetComponent<PlayerAnimations>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            playerController.health -= 20;
-
-            isHurt = true;
-            PlayerHurt();
-            hurtDelay = anim.GetCurrentAnimatorStateInfo(0).length;
-            Invoke("HurtComplete", hurtDelay);
-
-            if (playerController.health == 0)
+            if (!playerController.isAttacking)
             {
-                playerController.lives -= 1;
-
-                isDead = true;
-                PlayerDead();
-                deathDelay = anim.GetCurrentAnimatorStateInfo(0).length;
-                Invoke("DeathComplete", deathDelay);
-                
-                Respawn();
-                playerController.health = 100;
-            }
-            if (playerController.lives == 0)
-            {
-                isDead = true;
-                PlayerDead();
-                deathDelay = anim.GetCurrentAnimatorStateInfo(0).length;
-                Invoke("DeathComplete", deathDelay);
-
-                Destroy(gameObject);
-                uIController.GameOverPanel();
+                isHurt = true;
+                PlayerHurt();
+                playerController.health -= 50;
+                if (playerController.health == 0)
+                {
+                    playerController.lives -= 1;
+                    playerDeath();
+                    playerController.health = 100;
+                }
+                if (playerController.lives == 0)
+                {
+                    playerDeath();
+                    Destroy(gameObject);
+                    uIController.GameOverPanel();
+                }
             }
         }
     }
 
     public void DeathByFalling()
     {
-        if (transform.position.y <= -12f)
+        if (transform.position.y <= -17.5f)
         {
-            isDead = true;
-            PlayerDead();
-            deathDelay = anim.GetCurrentAnimatorStateInfo(0).length;
-            Invoke("DeathComplete", deathDelay);
-
             if (playerController.lives != 0)
             {
                 playerController.lives -= 1;
@@ -85,31 +72,31 @@ public class PlayerDeath : MonoBehaviour
         }
     }
 
-    internal void PlayerHurt()
+    void playerDeath()
+    {
+
+    }
+
+    void PlayerHurt()
     {
         if (isHurt)
         {
-            playerController.ChangeAnimationState(HURT);
+            isHurt = false;
+            if (!isHurting)
+            {
+                isHurting = true;
+                playerAnimations.ChangeAnimationState(HURT);
+                hurtDelay = anim.GetCurrentAnimatorStateInfo(0).length;
+                Invoke("HurtComplete", hurtDelay);
+            }
         }
-    }
-
-    internal void PlayerDead()
-    {
-        if (isDead)
-        {
-            playerController.ChangeAnimationState(DEAD);
-        }
-    }
-
-    void DeathComplete()
-    {
-        isDead = false;
     }
 
     void HurtComplete()
     {
-        isHurt = false;
+        isHurting = false;
     }
+
 
     private void Respawn()
     {
