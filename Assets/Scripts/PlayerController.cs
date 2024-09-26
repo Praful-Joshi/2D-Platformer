@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
 
     //Declaring Constants
-    private string WALK = "Walk", RUN = "Run", CROUCH = "Crouch", GROUNDED = "grounded", JUMP = "jump";
+    private string WALK = "Walk", RUN = "Run", CROUCH = "Crouch", GROUNDED = "Grounded", JUMP = "Jump", HURT = "Hurt", DEAD = "Dead";
     private string GROUND_TAG = "Ground";
 
     //Declaring Variables
@@ -15,22 +17,24 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     internal bool hasKey = false;
     private float horizontal;
+    public int health = 100, lives = 2;
 
     //Declaring components
     private Rigidbody2D myBody;
+    private Transform myTransform;
     private SpriteRenderer sr;
     private Animator anim;
     public TMPController tMPController;
-  
-    private void Awake() {
+    public LevelController levelController;
+
+
+    // Start, Awake, Update etc.
+    private void Awake()
+    {
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
-    }
-    
-    public void PickUpKey() {
-        hasKey = true;
-        StartCoroutine(tMPController.KeyReceive());
+        myTransform = GetComponent<Transform>();
     }
 
     void Start()
@@ -38,7 +42,8 @@ public class PlayerController : MonoBehaviour
         //code
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         PlayerJump();
     }
 
@@ -47,19 +52,23 @@ public class PlayerController : MonoBehaviour
         horizontal = Input.GetAxisRaw("Horizontal");
         PlayerMovementKeyboard(horizontal);
 
-        if(Input.GetKey(KeyCode.LeftShift))
-            moveForce = 12f;
+        if (Input.GetKey(KeyCode.LeftShift))
+            moveForce = 9f;
         else
-            moveForce = 4f;
+            moveForce = 3f;
 
         HorizontalMovement();
         PlayerCrouch();
+        DeathByFalling();
     }
 
-    private void LateUpdate() {
-        CheckWhereToFace();   
+    private void LateUpdate()
+    {
+        CheckWhereToFace();
     }
 
+
+    // Player Movement & Animations
     void PlayerMovementKeyboard(float horizontal)
     {
         transform.position += new Vector3(horizontal, 0f, 0f) * Time.deltaTime * moveForce;
@@ -67,32 +76,33 @@ public class PlayerController : MonoBehaviour
 
     void HorizontalMovement()
     {
-        if(horizontal == 0) {
+        if (horizontal == 0)
+        {
             anim.SetBool(WALK, false);
             anim.SetBool(RUN, false);
         }
-        if(horizontal != 0 && moveForce == 4f)
+        if (horizontal != 0 && moveForce == 3f)
             anim.SetBool(WALK, true);
 
-        if(horizontal != 0 && moveForce == 12f)
+        if (horizontal != 0 && moveForce == 9f)
             anim.SetBool(RUN, true);
         else
-            anim.SetBool(RUN, false);   
+            anim.SetBool(RUN, false);
     }
 
     void CheckWhereToFace()
-	{
-		if (horizontal > 0)
+    {
+        if (horizontal > 0)
             sr.flipX = false;
-		else if (horizontal < 0)
+        else if (horizontal < 0)
             sr.flipX = true;
-	}
+    }
 
     void PlayerJump()
     {
-        if(Input.GetKey(KeyCode.Space) && isGrounded)
+        if (Input.GetKey(KeyCode.Space) && isGrounded)
         {
-            myBody.velocity = new Vector2(myBody.velocity.x, jumpForce); 
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpForce);
             anim.SetTrigger(JUMP);
             isGrounded = false;
         }
@@ -101,7 +111,7 @@ public class PlayerController : MonoBehaviour
 
     void PlayerCrouch()
     {
-        if(Input.GetKey(KeyCode.C))
+        if (Input.GetKey(KeyCode.C))
         {
             anim.SetBool(CROUCH, true);
         }
@@ -110,10 +120,30 @@ public class PlayerController : MonoBehaviour
             anim.SetBool(CROUCH, false);
         }
     }
-    
+
+
+    // Interactable functions
+    public void PickUpKey()
+    {
+        hasKey = true;
+        StartCoroutine(tMPController.KeyReceive());
+    }
+
+    public void DeathByFalling()
+    {
+        if (transform.position.y <= -12f)
+        {
+            Destroy(gameObject);
+            SceneManager.LoadScene(0);
+        }
+    }
+
+
+    // Collision check
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag(GROUND_TAG)) {
+        if (collision.gameObject.CompareTag(GROUND_TAG))
+        {
             isGrounded = true;
         }
     }
