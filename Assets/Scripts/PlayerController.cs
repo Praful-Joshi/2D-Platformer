@@ -7,25 +7,32 @@ public class PlayerController : MonoBehaviour
 
     //Declaring Constants
     private string WALK = "Walk", RUN = "Run", CROUCH = "Crouch", GROUNDED = "grounded", JUMP = "jump";
-    private bool isGrounded;
     private string GROUND_TAG = "Ground";
 
     //Declaring Variables
     [SerializeField]
     private float moveForce, jumpForce = 10f;
-    private float horizontal, vertical;
+    private bool isGrounded;
+    internal bool hasKey = false;
+    private float horizontal;
 
     //Declaring components
     private Rigidbody2D myBody;
     private SpriteRenderer sr;
     private Animator anim;
-
-    
-    
+    internal TMPController tMPController;
+  
     private void Awake() {
         myBody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        tMPController = GetComponent<TMPController>();
+    }
+    
+    public void PickUpKey() {
+        hasKey = true;
+        Debug.Log("New key received");
+        //tMPController.KeyReceive();
     }
 
     void Start()
@@ -33,18 +40,21 @@ public class PlayerController : MonoBehaviour
         //code
     }
 
+    private void FixedUpdate() {
+        PlayerJump();
+    }
+
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         PlayerMovementKeyboard(horizontal);
-        
+
         if(Input.GetKey(KeyCode.LeftShift))
-            moveForce = 8f;
+            moveForce = 12f;
         else
             moveForce = 4f;
 
         HorizontalMovement();
-        PlayerJump();
         PlayerCrouch();
     }
 
@@ -66,7 +76,7 @@ public class PlayerController : MonoBehaviour
         if(horizontal != 0 && moveForce == 4f)
             anim.SetBool(WALK, true);
 
-        if(horizontal != 0 && moveForce == 8f)
+        if(horizontal != 0 && moveForce == 12f)
             anim.SetBool(RUN, true);
         else
             anim.SetBool(RUN, false);   
@@ -84,7 +94,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space) && isGrounded)
         {
-            myBody.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            myBody.velocity = new Vector2(myBody.velocity.x, jumpForce); 
             anim.SetTrigger(JUMP);
             isGrounded = false;
         }
