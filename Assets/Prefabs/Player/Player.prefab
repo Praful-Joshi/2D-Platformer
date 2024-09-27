@@ -183,3 +183,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc7a72c25f8f485468fe9d4dd4564d2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnPosition: {fileID: 0}
+  uIController: {fileID: 0}

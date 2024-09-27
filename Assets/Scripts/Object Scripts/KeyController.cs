@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class KeyController : MonoBehaviour
 {
+    public PlayerController playerController;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
 
-        if (collision.gameObject.GetComponent<PlayerController>() != null)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
             playerController.PickUpKey();
             Destroy(gameObject);
         }
